@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+        PolicyId="urn:oasis:names:tc:xacml:2.0:Medical-Records-Policy:policy"
+        RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable" Version="1.0">
+    <Description>
+        Medical Record Policies
+    </Description>
+    <Target/>
+    <Rule Effect="Permit" RuleId="urn:oasis:names:tc:xacml:2.0:patient_rule">
+        <Description>
+            A Patient can only see his record and change his password
+        </Description>
+        <Target>
+            <AnyOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">ADMIN</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">MEDIC</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NURSE</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PATIENT</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+            </AnyOf>
+        </Target>
+        <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">private/home</AttributeValue>
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">private/myRecord</AttributeValue>
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">private/changeMyPassword</AttributeValue>
+                </Apply>
+                <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                     Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                     DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Apply>
+        </Condition>
+    </Rule>
+    <Rule Effect="Permit" RuleId="urn:oasis:names:tc:xacml:2.0:nurse_rule">
+
+        <Description>
+            A Nurse can see other patient's records.
+        </Description>
+        <Target>
+            <AnyOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">ADMIN</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">MEDIC</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NURSE</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+            </AnyOf>
+        </Target>
+        <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">private/watchRecord</AttributeValue>
+                </Apply>
+                <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                     Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                     DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Apply>
+        </Condition>
+    </Rule>
+    <Rule Effect="Permit" RuleId="urn:oasis:names:tc:xacml:2.0:medic_rule">
+        <Description>
+            A Medic can add records.
+        </Description>
+        <Target>
+            <AnyOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">ADMIN</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">MEDIC</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+            </AnyOf>
+        </Target>
+        <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">private/addRecord</AttributeValue>
+                </Apply>
+                <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                     Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                     DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Apply>
+        </Condition>
+    </Rule>
+    <Rule Effect="Permit" RuleId="urn:oasis:names:tc:xacml:2.0:admin_rule">
+        <Description>
+            An Admin can add users and Hospitals to the system.
+        </Description>
+        <Target>
+            <AnyOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">ADMIN</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+            </AnyOf>
+        </Target>
+        <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">private/registration</AttributeValue>
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">private/addHospital</AttributeValue>
+                </Apply>
+                <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                     Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                     DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Apply>
+        </Condition>
+    </Rule>
+    <Rule Effect="Permit" RuleId="urn:oasis:names:tc:xacml:2.0:hospital-rule">
+        <Description>
+            An authorized person can only see and edit record from Santa Maria Hospital and Espirito Santo
+        </Description>
+        <Target>
+            <AnyOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">ADMIN</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">MEDIC</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+                <AllOf>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NURSE</AttributeValue>
+                        <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:subject:role"
+                                             Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                             DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                    </Match>
+                </AllOf>
+            </AnyOf>
+        </Target>
+        <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Santa Maria</AttributeValue>
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Espirito Santo</AttributeValue>
+                </Apply>
+                <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                     Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                     DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Apply>
+        </Condition>
+    </Rule>
+    <Rule Effect="Deny" RuleId="urn:oasis:names:tc:xacml:2.0:deny_all_rule">
+        <Description>
+            Deny every other request
+        </Description>
+    </Rule>
+</Policy>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Medical Records | My Records</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body style="background-color: #545b62">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="color:white;">Medical Records</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/private/home}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item" th:if="${decisions.get('private/registration')}">
+                <a class="nav-link" th:href="@{/private/registration}">Registration</a>
+            </li>
+            <li class="nav-item" th:if="${decisions.get('private/myRecord')}">
+                <a class="nav-link" th:href="@{/private/myRecord}">My Medical Record</a>
+            </li>
+            <li class="nav-item" th:if="${decisions.get('private/addRecord')}">
+                <a class="nav-link" th:href="@{/private/addRecord}">Modify Record</a>
+            </li>
+            <li class="nav-item" th:if="${decisions.get('private/watchRecord')}">
+                <a class="nav-link" th:href="@{/private/watchRecord}">Watch Record</a>
+            </li>
+            <li class="nav-item" th:if="${decisions.get('private/changeMyPassword')}">
+                <a class="nav-link" th:href="@{/private/changeMyPassword}">Change My password</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}" method="get">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="card-group" style="margin-top:40px">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                <span th:utext="${username}"></span>
+            </div>
+            <div class="card-body mx-auto d-block">
+                <span th:utext="${accessDeniedMessage}"></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
